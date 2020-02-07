@@ -12,6 +12,7 @@ path = '/home/opc/cifar-10-batches-py/'
 
 for y in range(0,200):
     j = y*5
+    print(str(y))
     for x in range(1,6):
         # Source path 
         source = path + 'data_batch_'+ str(x)
