@@ -73,7 +73,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 for epoch in range(10):  # loop over the dataset multiple times
 
     running_loss = 0.0
-    base = "/mnt/cifar-data/data_batch_"
+    base = "/mnt/jblau-ai-datasets-filesystem/cifar-data/data_batch_"
     for x in range(1,200):
         t = MyDataset(base+ str(x), transform=transform)
         trainloader = torch.utils.data.DataLoader(t, batch_size=2000,
