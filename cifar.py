@@ -75,7 +75,7 @@ for epoch in range(2):  # loop over the dataset multiple times
     for x in range(1,11):
         t = MyDataset(base+ str(x), transform=transform)
         trainloader = torch.utils.data.DataLoader(t, batch_size=4,
-                                          shuffle=True, num_workers=2)
+                                          shuffle=True, num_workers=6)
         for i, data in enumerate(trainloader, 0):
             # get the inputs; data is a list of [inputs, labels]
 
