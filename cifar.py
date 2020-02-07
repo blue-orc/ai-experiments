@@ -72,7 +72,7 @@ for epoch in range(2):  # loop over the dataset multiple times
 
     running_loss = 0.0
     base = "/home/opc/cifar-10-batches-py/data_batch_"
-    for x in range(1,501):
+    for x in range(1,1190):
         t = MyDataset(base+ str(x), transform=transform)
         trainloader = torch.utils.data.DataLoader(t, batch_size=100,
                                           shuffle=True, num_workers=2)
