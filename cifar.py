@@ -15,7 +15,7 @@ transform = transforms.Compose(
 #                                        download=True, transform=transform)
 #trainloader1 = torch.utils.data.DataLoader(trainset, batch_size=4,
 #                                          shuffle=True, num_workers=2)
-
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 def unpickle(file):
     with open(file, 'rb') as fo:
         dict = pickle.load(fo, encoding='bytes')
@@ -62,6 +62,7 @@ class MyDataset(torch.utils.data.Dataset):
         return len(self.target)
 
 net = Net()
+net = net.to(device)
 
 import torch.optim as optim
 
@@ -74,12 +75,12 @@ for epoch in range(2):  # loop over the dataset multiple times
     base = "/mnt/cifar-data/data_batch_"
     for x in range(1,1000):
         t = MyDataset(base+ str(x), transform=transform)
-        trainloader = torch.utils.data.DataLoader(t, batch_size=1000,
+        trainloader = torch.utils.data.DataLoader(t, batch_size=100,
                                           shuffle=True, num_workers=2)
         for i, data in enumerate(trainloader, 0):
             # get the inputs; data is a list of [inputs, labels]
 
-            inputs, labels = data
+            inputs, labels = data[0].to(device), data[1].to(device)
 
             # zero the parameter gradients
             optimizer.zero_grad()
