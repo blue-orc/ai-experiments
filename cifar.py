@@ -74,7 +74,7 @@ for epoch in range(2):  # loop over the dataset multiple times
     base = "/mnt/cifar-data/data_batch_"
     for x in range(1,1000):
         t = MyDataset(base+ str(x), transform=transform)
-        trainloader = torch.utils.data.DataLoader(t, batch_size=100,
+        trainloader = torch.utils.data.DataLoader(t, batch_size=1000,
                                           shuffle=True, num_workers=2)
         for i, data in enumerate(trainloader, 0):
             # get the inputs; data is a list of [inputs, labels]
