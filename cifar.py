@@ -62,6 +62,7 @@ class MyDataset(torch.utils.data.Dataset):
         return len(self.target)
 
 net = Net()
+net = nn.DataParallel(net)
 net = net.to(device)
 
 import torch.optim as optim
