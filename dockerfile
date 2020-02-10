@@ -56,7 +56,6 @@ RUN pip install h5py-cache==1.0
 
 # Install Torchnet, a high-level framework for PyTorch
 RUN pip install torchnet==0.0.4
-
 # Install Requests, a Python library for making HTTP requests
 RUN conda install -y requests=2.19.1 \
  && conda clean -ya
@@ -75,5 +74,6 @@ RUN conda install -y -c menpo opencv3=3.1.0 \
 
 COPY cifar.py /app/cifar.py
 
+ENV PATH "$PATH:/usr/local/bin/python3"
 # Set the default command to python3
 CMD ["python3 cifar.py"]
