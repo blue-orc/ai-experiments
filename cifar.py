@@ -10,6 +10,9 @@ import torchvision.transforms as transforms
 # Reference documentation:
 # https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html
 
+# Mount point defined for the container. Change this value if running on host.
+base = "/app/cifar-data/data_batch_"
+
 # Dataset has 1,000 files each containing 10,000 images
 
 # Deserializes the data
@@ -69,9 +72,6 @@ net = Net()
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
-# Mount point defined for the container. Change thie value if running on host.
-base = "/app/cifar-data/data_batch_"
-
 # Loop over the dataset multiple times. Change this value to run container longer.
 for epoch in range(10):  
     running_loss = 0.0
@@ -96,8 +96,8 @@ for epoch in range(10):
             # Print statistics
             running_loss += loss.item()
             if i % 1 == 0:
-                print('[%d, %d, %5d] loss: %.3f' %
-                    (epoch + 1, x, i + 1, running_loss / 2000))
+                print('[Epoch: %d, File #:  %d, Image #: %5d] loss: %.6f' %
+                    (epoch + 1, x, (i + 1) * 2000, running_loss / 2000))
                 running_loss = 0.0
 
 print('Finished Training')
