@@ -1,26 +1,24 @@
-import torch
-import torchvision
-import torchvision.transforms as transforms
-import pickle
-
 import numpy as np
+import pickle
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.optim as optim
+import torchvision
+import torchvision.transforms as transforms
 
-transform = transforms.Compose(
-    [transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+# Reference documentation:
+# https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html
 
-#trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
-#                                        download=True, transform=transform)
-#trainloader1 = torch.utils.data.DataLoader(trainset, batch_size=4,
-#                                          shuffle=True, num_workers=2)
-#device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# Dataset has 1,000 files each containing 10,000 images
+
+# Deserializes the data
 def unpickle(file):
     with open(file, 'rb') as fo:
         dict = pickle.load(fo, encoding='bytes')
     return dict
 
+# Define the convolutional neural network (CNN)
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -40,6 +38,8 @@ class Net(nn.Module):
         x = self.fc3(x)
         return x
 
+# Define the dataset
+# Controls how PyTorch dataloader will access the data
 class MyDataset(torch.utils.data.Dataset):
     def __init__(self, file, transform=None):
         ds = unpickle(file)
@@ -61,30 +61,30 @@ class MyDataset(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.target)
 
+transform = transforms.Compose(
+    [transforms.ToTensor(),
+     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+
 net = Net()
-#net = nn.DataParallel(net)
-#net = net.to(device)
-
-import torch.optim as optim
-
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
-for epoch in range(10):  # loop over the dataset multiple times
+# Mount point defined for the container. Change thie value if running on host.
+base = "/app/cifar-data/data_batch_"
 
+# Loop over the dataset multiple times. Change this value to run container longer.
+for epoch in range(10):  
     running_loss = 0.0
-    #base = "/mnt/jblau-ai-datasets-filesystem/cifar-data/data_batch_"
-    base = "/app/cifar-data/data_batch_"
+    # Every epoch, load each file in dataset and iterate over the data
     for x in range(1,1000):
         t = MyDataset(base+ str(x), transform=transform)
         trainloader = torch.utils.data.DataLoader(t, batch_size=2000,
                                           shuffle=True, num_workers=4)
         for i, data in enumerate(trainloader, 0):
-            # get the inputs; data is a list of [inputs, labels]
+            # Get the inputs; data is a list of [inputs, labels]
             inputs, labels = data
-            #inputs, labels = data[0].to(device), data[1].to(device)
 
-            # zero the parameter gradients
+            # Zero the parameter gradients
             optimizer.zero_grad()
 
             # forward + backward + optimize
@@ -93,9 +93,9 @@ for epoch in range(10):  # loop over the dataset multiple times
             loss.backward()
             optimizer.step()
 
-            # print statistics
+            # Print statistics
             running_loss += loss.item()
-            if i % 1 == 0:    # print every 2000 mini-batches
+            if i % 1 == 0:
                 print('[%d, %d, %5d] loss: %.3f' %
                     (epoch + 1, x, i + 1, running_loss / 2000))
                 running_loss = 0.0
