@@ -76,4 +76,4 @@ COPY cifar.py /app/cifar.py
 
 ENV PATH "$PATH:/usr/local/bin/python3"
 # Set the default command to python3
-CMD ["python3 cifar.py"]
+CMD ["python3"]
