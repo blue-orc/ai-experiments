@@ -83,7 +83,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 manager = Manager()
 D = manager.list()  # <-- can be shared between processes.
 processes = []
-for i in range(1,1000):
+for i in range(1,200):
     p = Process(target=getDataset, args=(D,i))  # Passing the list
     p.start()
     processes.append(p)
