@@ -83,6 +83,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 manager = Manager()
 D = manager.list()  # <-- can be shared between processes.
 processes = []
+print("Reading files")
 for i in range(1,5):
     p = Process(target=getDataset, args=(D,i))  # Passing the list
     p.start()
@@ -90,7 +91,7 @@ for i in range(1,5):
 for p in processes:
     p.join()
 
-
+print("finished reading")
 
 # Loop over the dataset multiple times. Change this value to run container longer.
 for epoch in range(10):  
