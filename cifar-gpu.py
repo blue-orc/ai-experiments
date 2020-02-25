@@ -101,7 +101,7 @@ print("finished reading")
 for epoch in range(10):  
     running_loss = 0.0
     # Every epoch, load each file in dataset and iterate over the data
-    for x in range(1,1000):
+    for x in range(1,len(D)):
         
         for i, data in enumerate(D[x], 0):
             # Get the inputs; data is a list of [inputs, labels]
