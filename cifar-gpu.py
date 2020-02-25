@@ -10,7 +10,7 @@ from multiprocessing import Process, Manager
 
 # Reference documentation:
 # https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html
-device = torch.device("cuda:0")
+
 base = "/mnt/cifar-data/data_batch_"
 
 # Dataset has 1,000 files each containing 10,000 images
@@ -74,6 +74,11 @@ transform = transforms.Compose(
     [transforms.ToTensor(),
      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
+
+device = torch.device("cuda:0")
+print(device)
+
+print("Creating net")
 net = Net()
 net = nn.DataParallel(net)
 net = net.to(device)
