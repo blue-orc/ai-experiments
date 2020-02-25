@@ -80,7 +80,6 @@ print(device)
 
 print("Creating net")
 net = Net()
-net = nn.DataParallel(net)
 net = net.to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
