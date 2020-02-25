@@ -88,7 +88,7 @@ manager = Manager()
 D = manager.list()  # <-- can be shared between processes.
 processes = []
 print("Reading files")
-for i in range(1,5):
+for i in range(0,6):
     p = Process(target=getDataset, args=(D,i))  # Passing the list
     p.start()
     processes.append(p)
